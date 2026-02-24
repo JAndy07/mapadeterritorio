@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mapa Longchamps</title>
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007AFF">
+    <link rel="apple-touch-icon" href="icono.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="buscador_container">
+        <input type="text" id="buscador_input" placeholder="Buscar territorio (ej: 14) o calle...">
+        <button id="buscador_btn">🔍</button>
+    </div>
+
+    <div id="mi_mapa"></div>
+
+    <div id="tarjeta_info">
+        <div class="tarjeta-handle"></div>
+        <button id="btn_cerrar_tarjeta">✕</button>
+        <div id="contenido_tarjeta"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
