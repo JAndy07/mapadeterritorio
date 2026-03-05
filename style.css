@@ -31,7 +31,8 @@ body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family:
     color: #1c1c1e;
 }
 #buscador_btn {
-    background: #0091FF;
+    background: #0091FF
+    ;
     border: none;
     color: white;
     border-radius: 15px;
@@ -112,4 +113,204 @@ body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family:
 .ocultar-etiquetas .etiqueta-territorio {
     opacity: 0;
     pointer-events: none;
+}
+/* --- BOTÓN FLOTANTE LISTA (Liquid Glass) --- */
+#btn_lista_no_visitar {
+    position: absolute;
+    bottom: 30px; 
+    left: 15px;
+    z-index: 9998;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1c1c1e;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+#btn_lista_no_visitar:active {
+    transform: scale(0.95);
+}
+
+/* --- PANEL DE LISTA COMPLETA --- */
+#panel_lista {
+    position: fixed;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(242, 242, 247, 0.65);
+    backdrop-filter: blur(45px) saturate(200%);
+    -webkit-backdrop-filter: blur(45px) saturate(200%);
+    z-index: 10000;
+    transition: top 0.4s cubic-bezier(0.1, 0.8, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+#panel_lista.panel-visible {
+    top: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+
+    /* ACÁ ESTÁ LA MAGIA: 60px de margen forzado arriba */
+    margin: 30px 20px 20px 20px; 
+
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+.panel-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1c1c1e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+#btn_cerrar_lista {
+    border: none;
+    background: rgba(0,0,0,0.1);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1c1c1e;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#contenido_lista {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 0 20px 40px 20px;
+}
+#contenido_lista::-webkit-scrollbar { width: 5px; }
+#contenido_lista::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+/* Tarjetitas internas para cada territorio */
+.grupo-territorio {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 18px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid rgba(255, 255, 255, 1);
+}
+.grupo-territorio .titulo-territorio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+}
+.grupo-territorio h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: #007aff;
+}
+.grupo-territorio ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #3a3a3c;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* Botón de "Ir al mapa" dentro de la lista */
+.btn-ir-territorio {
+    background: #2a8ef8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+    transition: transform 0.2s;
+}
+.btn-ir-territorio:active {
+    transform: scale(0.9);
+}
+/* --- ENRUTAMIENTO Y CARTEL DE TIEMPO (ESTILIZADO Y COMPACTO) --- */
+.leaflet-routing-container {
+    display: none !important;
+}
+
+#cartel_ruta {
+    position: fixed;
+    top: 80px; /* Ajuste estético de posición */
+    left: 50%;
+    transform: translateX(-50%);
+
+    /* Efecto Liquid Glass (Más transparente y estilizado) */
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+
+    /* Medidas Compactas */
+    padding: 8px 16px; /* REDUCIDO: Más ancho, menos alto */
+    border-radius: 14px; /* Bordes más modernos y suaves */
+
+    /* Sombra más suave y profesional */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+    /* Borde más sutil */
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+
+    /* Texto más compacto */
+    font-size: 15px; /* Ligeramente más chico */
+    font-weight: 700;
+    color: #1c1c1e;
+
+    z-index: 10000;
+    display: none; 
+    align-items: center;
+    gap: 10px;
+
+    /* Evita que se estire demasiado en pantallas anchas */
+    max-width: 90%;
+    white-space: nowrap; /* Mantiene todo en una línea */
+}
+#cartel_ruta.visible {
+    display: flex;
+}
+#btn_cerrar_ruta {
+    background: rgba(255, 59, 48, 0.8); /* Rojo transparente */
+    color: white;
+    border: none;
+    border-radius: 50%;
+
+    /* Botón más pequeño */
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+#btn_cerrar_ruta:active {
+    background: rgba(255, 59, 48, 1);
 }
