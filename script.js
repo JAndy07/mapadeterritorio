@@ -1,10 +1,31 @@
 // --- 1. CONFIGURACIÓN DEL MAPA ---
-const mapa = L.map('mi_mapa', { tap: false, zoomControl: false }).setView([-34.8510, -58.3780], 15);
-L.control.zoom({ position: 'bottomright' }).addTo(mapa); 
+const mapa = L.map('mi_mapa', { 
+    tap: false, 
+    zoomControl: false, 
+    // ESTA ES LA MAGIA: Usamos Canvas y le damos un "padding" (margen) gigante (1 = 100% extra de pantalla invisible)
+    renderer: L.canvas({ padding: 1 }) 
+}).setView([-34.8510, -58.3780], 15);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19, attribution: '© OpenStreetMap'
+// 1. Capa inferior: Mapa limpio sin ningún nombre de calle
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png', { 
+    maxZoom: 19 
 }).addTo(mapa);
+
+// 2. Creamos un cristal invisible flotando muy arriba (Nivel 650)
+mapa.createPane('capa_textos');
+mapa.getPane('capa_textos').style.zIndex = 650; 
+mapa.getPane('capa_textos').style.pointerEvents = 'none'; // Deja pasar los clics
+
+// 👇 NUEVA LÍNEA: Filtro fotográfico para oscurecer el texto a negro 👇
+mapa.getPane('capa_textos')
+
+// 3. Capa superior: Nombres de las calles flotando sobre los colores
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', { 
+    maxZoom: 19,
+    pane: 'capa_textos' 
+}).addTo(mapa);
+
+// (A partir de acá sigue tu código normal con "const direccionesNoVisitar = ...")
 
 // --- 2. DIRECCIONES ---
 const direccionesNoVisitar = {
@@ -30,18 +51,18 @@ const direccionesNoVisitar = {
     22: ["Chiesa 960"],
     25: ["Dihel 1005", "Dihel 1057", "Dihel 1085", "Quintana 981", "Quintana 943", "Davel 1126", "Buenos Aires 928"],
     26: ["Quintana 830", "Quintana 850", "Quintana 873", "Quintana 881", "Mitre 874", "Bolivar 852", "Bolívar 1032", "Bolívar 1108", "Bolívar 1140", "Sarmiento 825", "S. Peña 834", "Mitre 793"],
-    27: ["Belgrano 850", "S. Peña 796", "Quintana 761"],
+    27: ["Belgrano 850", "Saenz Peña 796", "Quintana 761"],
     28: ["Belgrano 957", "Belgrano 1059", "Mitre 624", "Quintana 695", "Saenz Peña 622", "Rivadavia 1050"],
     29: ["Francia 912", "Francia 1188", "Francia 1196", "Quintana 530", "Saenz Peña 530", "Mitre 505", "Mitre 521", "Rivadavia 875", "Rivadavia 1117", "Rivadavia 1145"],
     30: ["Francia 835", "Francia 855", "Francia 945", "Mitre 402", "Mitre 461", "Bolougne Sur Mer 1054"],
-    31: ["Bolougne Sur Mer 823", "Bolougne Sur Mer 1041", "Bolougne Sur Mer 1135", "S. Peña 344", "Mitre 392", "Malvinas Argentinas 810", "Malvinas Argentinas 838", "Malvinas Argentinas 852", "Malvinas Argentinas 1100", "Malvinas Argentinas 1145", "Berlín 1010", "Berlín 1050", "Quintana 224", "Quintana 255"],
+    31: ["Bolougne Sur Mer 823", "Bolougne Sur Mer 1041", "Bolougne Sur Mer 1135", "Saenz Peña 344", "Mitre 392", "Malvinas Argentinas 810", "Malvinas Argentinas 838", "Malvinas Argentinas 852", "Malvinas Argentinas 1100", "Malvinas Argentinas 1145", "Berlín 1010", "Berlín 1050", "Quintana 224", "Quintana 255"],
     32: ["Sarmiento 17", "Sarmiento 123", "Mitre 180", "Quintana 101", "Perrando 873"],
     33: ["Arlt 3525", "Arlt 3598", "Arlt 3612", "Arlt 3648", "Arlt 3670", "Arlt 3657", "Blomberg 3568", "Ávila 3547", "Ascasubi 807", "Ascasubi 919", "Posadas 930", "Posadas 839", "Posadas 845"],
     34: ["Blomberg 3316", "Blomberg 3432", "Ávila 3496", "Ávila 3387"],
     38: ["Berlín 865", "Perrando 665", "Perrando 660", "Perrando 723", "Perrando 735", "Berlín 737"],
     39: ["Languenheim 293", "Sarmiento 258", "Castillo 278"],
-    40: ["Castillo 311", "Castillo 345", "Malvinas Argentinas 492", "Malvinas Argentinas 582", "Malvinas Argentinas 792", "San Ignacio 348", "San Ignacio 390", "B. Sur Mer 705", "B. Sur Mer 708"],
-    41: ["B. Sur Mer 438", "B. Sur Mer 536", "B. Sur Mer 558", "Castillo 466"],
+    40: ["Castillo 311", "Castillo 345", "Malvinas Argentinas 492", "Malvinas Argentinas 582", "Malvinas Argentinas 792", "San Ignacio 348", "San Ignacio 390", "Boulogne Sur Mer 705", "Boulogne Sur Mer 708"],
+    41: ["Boulogne Sur Mer 438", "Boulogne Sur Mer 536", "Boulogne Sur Mer 558", "Castillo 466"],
     42: ["Canalejas 519", "Castillo 512", "Castillo 598", "Francia 662", "Rivadavia 573", "Rivadavia 659"],
     43: ["Belgrano 511", "Belgrano 513", "Belgrano 705", "Belgrano 711", "Belgrano 723", "Castillo 623", "Castillo 679", "Sarmiento 606", "Rivadavia 694", "Languenheim 696"],
     44: ["Sarmiento 748", "Bolivar 443", "Bolivar 707", "San Ignacio 749", "San Ignacio 755"],
@@ -2861,6 +2882,10 @@ const datosTerritorios =
 // 👆👆👆 FIN DE TU ARCHIVO GIGANTE 👆👆👆
 ;
 
+// Corrección de coordenadas
+
+
+
 // --- 4. RENDERIZADO DEL MAPA ---
 const traductorTerritorios = {
     0: "73", 4: "5", 1: "76", 3: "34", 2: "19", 5: "1", 6: "4", 9: "35", 10: "36",
@@ -2989,6 +3014,7 @@ mapa.locate({
 });
 
 mapa.on('locationfound', function(e) {
+  window.miUbicacionActual = e.latlng;
     const radio = e.accuracy / 2;
     if (marcadorUbicacion) {
         marcadorUbicacion.setLatLng(e.latlng);
@@ -3015,3 +3041,145 @@ function actualizarVisibilidadNumeros() {
 }
 mapa.on('zoomend', actualizarVisibilidadNumeros);
 actualizarVisibilidadNumeros();
+// --- 8. PANEL DE LISTA NO VISITAR ---
+const btnLista = document.getElementById('btn_lista_no_visitar');
+const panelLista = document.getElementById('panel_lista');
+const btnCerrarLista = document.getElementById('btn_cerrar_lista');
+const contenedorLista = document.getElementById('contenido_lista');
+
+function generarListaCompleta() {
+    let html = '';
+
+    // Obtenemos los números de territorio y los ordenamos
+    const territorios = Object.keys(direccionesNoVisitar).map(Number).sort((a, b) => a - b);
+
+    territorios.forEach(terr => {
+        const casas = direccionesNoVisitar[terr];
+        if (casas && casas.length > 0) {
+            html += `
+            <div class="grupo-territorio">
+                <div class="titulo-territorio">
+                    <h3>Territorio ${terr}</h3>
+                    <button class="btn-ir-territorio" onclick="irAlTerritorioDesdeLista('${terr}')">📍 Ver mapa</button>
+                </div>
+                <ul>`;
+
+            // EL ARREGLO: Detecta si es un texto simple o un objeto con coordenadas
+            casas.forEach(casa => {
+                const nombreCalle = casa.direccion ? casa.direccion : casa;
+                html += `<li>${nombreCalle}</li>`;
+            });
+
+            html += `
+                </ul>
+            </div>`;
+        }
+    });
+
+    contenedorLista.innerHTML = html;
+}
+
+// Función para conectar el botón interior con el buscador del mapa
+window.irAlTerritorioDesdeLista = function(numeroTerritorio) {
+    // 1. Oculta el panel
+    panelLista.classList.remove('panel-visible');
+
+    // 2. Busca y simula el clic en el buscador
+    const inputBuscador = document.getElementById('buscador_input');
+    const btnBuscador = document.getElementById('buscador_btn');
+
+    if(inputBuscador && btnBuscador) {
+        inputBuscador.value = numeroTerritorio;
+        btnBuscador.click();
+    }
+};
+
+// Eventos de los botones principales
+if (btnLista && panelLista) {
+    btnLista.addEventListener('click', function() {
+        generarListaCompleta(); 
+        panelLista.classList.add('panel-visible');
+    });
+
+    btnCerrarLista.addEventListener('click', function() {
+        panelLista.classList.remove('panel-visible');
+    });
+}
+
+// --- 10. ENRUTAMIENTO: CÓMO LLEGAR (MANTENER PRESIONADO) ---
+let controlRuta = null;
+
+// Evento: Al mantener presionado el dedo sobre el mapa (contextmenu)
+mapa.on('contextmenu', function(e) {
+    if (!window.miUbicacionActual) {
+        alert("📍 Esperando GPS... Asegurate de tener la ubicación activada para calcular la ruta.");
+        return;
+    }
+
+    const destino = e.latlng;
+
+    // Si ya había una ruta vieja, la borramos
+    if (controlRuta) {
+        mapa.removeControl(controlRuta);
+    }
+
+    // Encendemos el cartel en modo "Carga"
+    const cartelRuta = document.getElementById('cartel_ruta');
+    const textoRuta = document.getElementById('texto_ruta');
+    cartelRuta.classList.add('visible');
+    textoRuta.innerHTML = "⏳ Calculando ruta...";
+
+  // Creamos la línea azul (INTENTO DE OPTIMIZACIÓN PEATONAL MÁXIMA)
+  controlRuta = L.Routing.control({
+      waypoints: [
+          L.latLng(window.miUbicacionActual.lat, window.miUbicacionActual.lng),
+          L.latLng(destino.lat, destino.lng)
+      ],
+      // Le pasamos el perfil 'foot' de la manera más estricta permitida por el Routerv1
+      router: new L.Routing.OSRMv1({
+          serviceUrl: 'https://router.project-osrm.org/route/v1',
+          profile: 'foot',
+          // Agregamos parámetros que *podrían* ayudar a que priorice el camino corto
+          useHints: false,
+          computeAlternativeRoutes: false
+      }),
+      lineOptions: {
+          styles: [{ color: '#007AFF', opacity: 0.8, weight: 6 }] 
+      },
+      createMarker: function() { return null; }, 
+      fitSelectedRoutes: true, 
+      show: false 
+  }).addTo(mapa);
+
+    // Cuando termina de calcular, leemos la distancia
+    controlRuta.on('routesfound', function(e) {
+        const distanciaMetros = e.routes[0].summary.totalDistance;
+
+        // Conversión a texto (metros o kilómetros)
+        let textoDist = distanciaMetros > 1000 
+            ? (distanciaMetros/1000).toFixed(1) + ' km' 
+            : Math.round(distanciaMetros) + ' m';
+
+        // TRUCO PEATONAL: Caminamos aprox 83 metros por minuto (5km/h)
+        let minutosCaminando = Math.round(distanciaMetros / 83); 
+        if (minutosCaminando < 1) minutosCaminando = 1;
+
+        textoRuta.innerHTML = `🚶‍♂️ ${minutosCaminando} min (${textoDist})`;
+    });
+
+    controlRuta.on('routingerror', function() {
+        textoRuta.innerHTML = "❌ Error al calcular ruta";
+    });
+});
+
+// Botón para borrar la ruta y apagar el cartel
+const btnCerrarRuta = document.getElementById('btn_cerrar_ruta');
+if (btnCerrarRuta) {
+    btnCerrarRuta.addEventListener('click', function() {
+        if (controlRuta) {
+            mapa.removeControl(controlRuta);
+            controlRuta = null;
+        }
+        document.getElementById('cartel_ruta').classList.remove('visible');
+    });
+}
