@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 </head>
 <body>
 
@@ -22,6 +23,10 @@
     </div>
 
     <div id="mi_mapa"></div>
+    <div id="cartel_ruta">
+        <span id="texto_ruta"></span>
+        <button id="btn_cerrar_ruta">✕</button>
+    </div>
 
     <div id="tarjeta_info">
         <div class="tarjeta-handle"></div>
@@ -29,13 +34,24 @@
         <div id="contenido_tarjeta"></div>
     </div>
 
+    <button id="btn_lista_no_visitar">📋 Lista No Visitar</button>
+
+    <div id="panel_lista">
+        <div class="panel-header">
+            <h2>🚫 Direcciones No Visitar</h2>
+            <button id="btn_cerrar_lista">✕</button>
+        </div>
+        <div id="contenido_lista"></div>
+    </div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="script.js"></script>
 
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         }
+        
     </script>
 </body>
 </html>
