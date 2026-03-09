@@ -1,20 +1,41 @@
 {
+  "id": "/mapa",
   "name": "Mapa Longchamps",
   "short_name": "Territorios",
+  "description": "Herramienta de mapas, direcciones y transporte para la zona de Longchamps.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#007AFF",
+  "orientation": "portrait",
+  "background_color": "#1c1c1e",
+  "theme_color": "#1c1c1e",
+  "lang": "es",
   "icons": [
     {
       "src": "icono.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
       "src": "icono.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Líneas de Colectivo",
+      "short_name": "Colectivos",
+      "url": "/?tab=transporte",
+      "icons": [{ "src": "icono-bus.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Direcciones No Visitar",
+      "short_name": "No Visitar",
+      "url": "/?tab=lista",
+      "icons": [{ "src": "icono-lista.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
