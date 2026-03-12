@@ -5,7 +5,7 @@ const direccionesNoVisitar = {
     3: ["Zuviría 3026", "Japón 3060", "Lavié 3236"],
     4: ["Bunge 3287", "Olavarría 3289", "M. Santiago 1269"],
     5: ["Prado 3263"],
-    6: ["Japón 3364", "Lavié 3348", "Dr. Iraola 907", "Dr. Iraola 1162", "Bufano 3414", "Japón 3418", "Japón 3466"],
+    6: ["Japón 3364", "Dr. Iraola 907", "Dr. Iraola 1162", "Bufano 3414", "Japón 3418", "Japón 3466"],
     7: ["Prado 3545", "Prado 3596", "Prado 3571", "Posadas 1028", "Hidalgo 1133"],
     8: ["Dr. Iraola 1178", "Prado 3455"],
     9: ["Bunge 3607"],
